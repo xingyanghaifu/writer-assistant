@@ -24,6 +24,8 @@ jobs:
         run: npx tsc -p tsconfig.node.json --noEmit
       - name: Type check (web)
         run: npx tsc -p tsconfig.web.json --noEmit
+      - name: Build application
+        run: npm run build
       - name: Smoke tests
         run: WA_SMOKE=1 WA_SMOKE_OUT=reports/smoke.json ./node_modules/.bin/electron . --no-sandbox
         env:
