@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' file: data:; style-src 'self' 'unsafe-inline'; script-src 'self'" />
+    <title>宠物</title>
+    <style>
+      body { margin: 0; background: transparent; user-select: none; overflow: hidden; height: 100vh; font-family: 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', system-ui, sans-serif; }
+      #root { height: 100%; display: flex; align-items: flex-end; justify-content: center; }
+
+      /* 宠物窗口本地动画（不引外部样式表，保持 CSP 简单） */
+      @keyframes wa-breathe { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.02); } }
+      @keyframes wa-pop { 0% { transform: translateX(-50%) scale(0.6); opacity: 0; } 60% { transform: translateX(-50%) scale(1.05); opacity: 1; } 100% { transform: translateX(-50%) scale(1); opacity: 1; } }
+      .wa-pop { animation: wa-pop 240ms cubic-bezier(0.22, 1, 0.36, 1) both; }
+
+      /* 减少动效：全局生效（与主窗口保持一致） */
+      @media (prefers-reduced-motion: reduce) {
+        *, *::before, *::after {
+          animation-duration: 1ms !important;
+          animation-iteration-count: 1 !important;
+          transition-duration: 1ms !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="./main.tsx"></script>
+  </body>
+</html>

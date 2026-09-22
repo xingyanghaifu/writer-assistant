@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+  <rect width="256" height="256" rx="56" fill="#F3FFFE"/>
+  <g transform="translate(8 28)">
+    <!-- 下层：完整鲸剪影 -->
+    <path fill="#07959C" d="M18 108
+      C14 84 32 58 70 52
+      C92 28 132 22 168 44
+      C198 34 230 52 236 84
+      C244 108 232 130 204 138
+      C196 160 164 174 128 168
+      C88 176 46 160 26 132
+      C18 126 16 116 18 108 Z"/>
+    <!-- 中层书页带 -->
+    <path fill="#14BCC2" d="M32 100
+      C32 80 50 62 84 58
+      C108 40 144 40 174 58
+      C200 52 222 68 224 90
+      C226 110 210 124 184 128
+      C172 144 140 150 110 142
+      C78 148 46 136 34 116
+      C32 110 32 104 32 100 Z"/>
+    <!-- 上层书页带 -->
+    <path fill="#3ED3D8" d="M52 96
+      C56 80 74 68 102 68
+      C124 56 152 56 174 70
+      C194 68 208 80 208 96
+      C208 110 194 120 172 122
+      C158 132 132 134 110 126
+      C86 130 60 120 52 104
+      C50 100 50 98 52 96 Z"/>
+    <path d="M58 90 C96 74 150 74 196 94" fill="none" stroke="#F4FFFE" stroke-width="3" stroke-linecap="round" opacity=".5"/>
+    <path d="M48 118 C98 100 156 100 208 122" fill="none" stroke="#F4FFFE" stroke-width="2.6" stroke-linecap="round" opacity=".28"/>
+    <!-- 喷水 -->
+    <path d="M78 50 C72 24 90 16 94 40" fill="none" stroke="#14BCC2" stroke-width="7" stroke-linecap="round"/>
+    <path d="M96 48 C100 20 120 16 114 42" fill="none" stroke="#14BCC2" stroke-width="7" stroke-linecap="round"/>
+    <circle cx="84" cy="20" r="5.5" fill="#14BCC2"/>
+    <circle cx="108" cy="16" r="4.5" fill="#14BCC2"/>
+    <!-- 背鳍 -->
+    <path fill="#14BCC2" d="M126 46 C138 8 176 14 170 52 C154 40 140 38 126 46Z"/>
+    <!-- 胸鳍 -->
+    <path fill="#07959C" d="M100 140 C128 166 104 190 76 162 C84 152 92 144 100 140Z"/>
+    <!-- 尾鳍 -->
+    <path fill="#14BCC2" d="M218 92 C258 64 282 96 254 114 C280 132 256 166 218 132 C226 118 226 104 218 92Z"/>
+    <!-- 嘴+眼 -->
+    <path d="M24 96 C34 112 54 120 70 110" fill="none" stroke="#05686E" stroke-width="5" stroke-linecap="round"/>
+    <circle cx="64" cy="80" r="11.5" fill="#fff"/>
+    <circle cx="66.5" cy="82" r="5.2" fill="#143A3D"/>
+    <circle cx="69" cy="79" r="1.8" fill="#fff"/>
+  </g>
+</svg>

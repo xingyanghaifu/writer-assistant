@@ -1,0 +1,32 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - name: Install
+        run: npm ci
+      - name: Setup Electron（缓存下载）
+        run: node scripts/setup-electron.mjs
+        shell: bash
+      - name: Type check (node)
+        run: npx tsc -p tsconfig.node.json --noEmit
+      - name: Type check (web)
+        run: npx tsc -p tsconfig.web.json --noEmit
+      - name: Smoke tests
+        run: WA_SMOKE=1 WA_SMOKE_OUT=reports/smoke.json ./node_modules/.bin/electron . --no-sandbox
+        env:
+          WA_SMOKE: '1'
+          WA_SMOKE_OUT: reports/smoke.json
+          ELECTRON_DISABLE_SANDBOX: '1'

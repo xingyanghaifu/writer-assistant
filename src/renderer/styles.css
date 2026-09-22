@@ -1,0 +1,419 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+ * 主题：light / dark / parchment
+ * 选择方式：html[data-theme="light|dark|parchment"]
+ * 默认：跟随系统（prefers-color-scheme）— 由 main.tsx 启动时设置
+ *
+ * 不破坏现有变量名 (--wa-*)，仅扩展：
+ *   --wa-accent / --wa-accent-hover / --wa-success / --wa-warning / --wa-danger
+ *   --wa-radius-sm / --wa-radius-md / --wa-radius-lg
+ *   --wa-shadow-sm / --wa-shadow-md / --wa-shadow-lg
+ *   --wa-focus-ring
+ */
+:root {
+  /* 基础调色（light 默认） */
+  --wa-bg: #eef1f6;
+  --wa-panel: rgba(255, 255, 255, 0.58);
+  --wa-border: rgba(255, 255, 255, 0.42);
+  --wa-text: #1d1d1f;
+  --wa-muted: #6e6e73;
+  --wa-paper: rgba(255, 255, 255, 0.72);
+  --wa-glass: rgba(255, 255, 255, 0.52);
+  --wa-glass-strong: rgba(255, 255, 255, 0.72);
+  --wa-glass-border: rgba(255, 255, 255, 0.55);
+  --wa-glass-tint: rgba(255, 255, 255, 0.22);
+  --wa-blur: 28px;
+  --wa-blur-strong: 40px;
+
+  /* 状态色 */
+  --wa-accent: #0071e3;
+  --wa-accent-hover: #0077ed;
+  --wa-success: #16a34a;
+  --wa-warning: #d97706;
+  --wa-danger: #dc2626;
+
+  /* 圆角 */
+  --wa-radius-sm: 8px;
+  --wa-radius-md: 12px;
+  --wa-radius-lg: 18px;
+  --wa-radius-xl: 24px;
+
+  /* 阴影 */
+  --wa-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04), 0 0 0 0.5px rgba(255,255,255,0.4) inset;
+  --wa-shadow-md: 0 8px 24px rgba(0, 0, 0, 0.08), 0 0 0 0.5px rgba(255,255,255,0.45) inset;
+  --wa-shadow-lg: 0 24px 64px rgba(0, 0, 0, 0.18), 0 0 0 0.5px rgba(255,255,255,0.5) inset;
+
+  /* 焦点环 */
+  --wa-focus-ring: 0 0 0 2px var(--wa-accent);
+
+  /* 主题切换过渡：所有色变量 120ms */
+  --wa-theme-transition: background-color 120ms ease-out,
+                         color 120ms ease-out,
+                         border-color 120ms ease-out,
+                         box-shadow 120ms ease-out;
+}
+
+/* dark 主题（兼容：data-theme 与 class 两种触发方式） */
+html[data-theme="dark"],
+.theme-dark {
+  --wa-bg: #0e1014;
+  --wa-panel: rgba(28, 31, 38, 0.55);
+  --wa-border: rgba(255, 255, 255, 0.08);
+  --wa-text: #f5f5f7;
+  --wa-muted: #a1a1a6;
+  --wa-paper: rgba(22, 24, 29, 0.72);
+  --wa-glass: rgba(22, 24, 29, 0.48);
+  --wa-glass-strong: rgba(28, 31, 38, 0.7);
+  --wa-glass-border: rgba(255, 255, 255, 0.12);
+  --wa-glass-tint: rgba(255, 255, 255, 0.04);
+  --wa-accent: #0a84ff;
+  --wa-accent-hover: #409cff;
+  --wa-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.35), 0 0 0 0.5px rgba(255,255,255,0.06) inset;
+  --wa-shadow-md: 0 8px 24px rgba(0, 0, 0, 0.4), 0 0 0 0.5px rgba(255,255,255,0.08) inset;
+  --wa-shadow-lg: 0 24px 64px rgba(0, 0, 0, 0.5), 0 0 0 0.5px rgba(255,255,255,0.1) inset;
+}
+
+/* parchment 主题（兼容：data-theme 与 class 两种触发方式） */
+html[data-theme="parchment"],
+.theme-parchment {
+  --wa-bg: #efe6d2;
+  --wa-panel: rgba(247, 239, 219, 0.58);
+  --wa-border: rgba(255, 255, 255, 0.38);
+  --wa-text: #3d3426;
+  --wa-muted: #8a7855;
+  --wa-paper: rgba(255, 248, 230, 0.74);
+  --wa-glass: rgba(247, 239, 219, 0.5);
+  --wa-glass-strong: rgba(255, 248, 230, 0.7);
+  --wa-glass-border: rgba(255, 255, 255, 0.42);
+  --wa-glass-tint: rgba(255, 255, 255, 0.2);
+}
+
+/* 应用主题切换过渡到 body 与 .wa-panel */
+body,
+.wa-panel,
+.wa-muted {
+  transition: var(--wa-theme-transition);
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+  background: transparent;
+}
+
+/* 无边框窗口：顶栏可拖动，按钮/输入不可拖 */
+.wa-titlebar {
+  -webkit-app-region: drag;
+  user-select: none;
+  app-region: drag;
+}
+.wa-titlebar .wa-no-drag,
+.wa-titlebar button,
+.wa-titlebar select,
+.wa-titlebar input,
+.wa-titlebar a,
+.wa-titlebar label {
+  -webkit-app-region: no-drag;
+  app-region: no-drag;
+}
+.wa-win-controls {
+  display: flex;
+  align-items: stretch;
+  height: 100%;
+  margin-right: -12px;
+  -webkit-app-region: no-drag;
+}
+.wa-win-btn {
+  width: 46px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  border: 0;
+  background: transparent;
+  color: var(--wa-muted);
+  transition: background-color 120ms ease-out, color 120ms ease-out;
+}
+.wa-win-btn:hover {
+  background: rgba(0, 0, 0, 0.06);
+  color: var(--wa-text);
+}
+.wa-win-btn.wa-win-close:hover {
+  background: #e81123;
+  color: #fff;
+}
+html[data-theme="dark"] .wa-win-btn:hover,
+.theme-dark .wa-win-btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+html[data-theme="dark"] .wa-win-btn.wa-win-close:hover,
+.theme-dark .wa-win-btn.wa-win-close:hover {
+  background: #e81123;
+  color: #fff;
+}
+
+body {
+  background: transparent;
+  color: var(--wa-text);
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', system-ui, sans-serif;
+  font-size: 14px;
+  letter-spacing: -0.01em;
+  font-variant-numeric: tabular-nums;
+  -webkit-font-smoothing: antialiased;
+}
+
+#root {
+  background:
+    radial-gradient(1100px 640px at 8% -8%, rgba(120, 168, 255, 0.28), transparent 55%),
+    radial-gradient(900px 520px at 108% 0%, rgba(255, 176, 196, 0.22), transparent 50%),
+    radial-gradient(820px 620px at 50% 118%, rgba(140, 220, 210, 0.18), transparent 55%),
+    var(--wa-bg);
+}
+html[data-theme="dark"] #root,
+.theme-dark #root {
+  background:
+    radial-gradient(1000px 600px at 8% -10%, rgba(60, 90, 180, 0.28), transparent 55%),
+    radial-gradient(800px 480px at 110% 8%, rgba(120, 70, 140, 0.2), transparent 50%),
+    radial-gradient(720px 560px at 40% 120%, rgba(40, 90, 90, 0.18), transparent 50%),
+    var(--wa-bg);
+}
+html[data-theme="parchment"] #root,
+.theme-parchment #root {
+  background:
+    radial-gradient(1000px 600px at 10% -8%, rgba(232, 196, 140, 0.35), transparent 55%),
+    radial-gradient(800px 500px at 110% 0%, rgba(210, 150, 110, 0.18), transparent 50%),
+    var(--wa-bg);
+}
+
+/* 滚动条 */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--wa-border);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--wa-muted);
+}
+
+.wa-panel {
+  background: var(--wa-glass);
+  border-color: var(--wa-glass-border);
+  backdrop-filter: saturate(180%) blur(var(--wa-blur));
+  -webkit-backdrop-filter: saturate(180%) blur(var(--wa-blur));
+}
+
+.wa-titlebar {
+  background: var(--wa-glass-strong);
+  border-bottom: 1px solid var(--wa-glass-border);
+  backdrop-filter: saturate(190%) blur(var(--wa-blur-strong));
+  -webkit-backdrop-filter: saturate(190%) blur(var(--wa-blur-strong));
+}
+
+.wa-glass {
+  background: var(--wa-glass);
+  border: 1px solid var(--wa-glass-border);
+  box-shadow: var(--wa-shadow-md);
+  backdrop-filter: saturate(180%) blur(var(--wa-blur));
+  -webkit-backdrop-filter: saturate(180%) blur(var(--wa-blur));
+}
+
+.wa-muted {
+  color: var(--wa-muted);
+}
+
+/* 动效基础：短、轻、以 opacity/transform 为主，避免大面积重排 */
+:root {
+  --wa-motion-fast: 120ms;
+  --wa-motion-base: 180ms;
+  --wa-motion-slow: 240ms;
+  --wa-ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --wa-ease-standard: cubic-bezier(0.2, 0, 0, 1);
+}
+
+/* 走向卡片滑出动画（阶段 4） */
+@keyframes wa-slide-up {
+  from { transform: translateY(16px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes wa-modal-in {
+  from { transform: translateY(8px) scale(0.985); opacity: 0; }
+  to { transform: translateY(0) scale(1); opacity: 1; }
+}
+
+@keyframes wa-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes wa-tab-in {
+  from { transform: translateY(4px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes wa-pop {
+  0% { transform: scale(0.6); opacity: 0; }
+  60% { transform: scale(1.05); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes wa-spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes wa-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+@keyframes wa-breathe {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.02); }
+}
+
+.wa-slide-up { animation: wa-slide-up var(--wa-motion-base) var(--wa-ease-out) both; }
+.wa-modal-backdrop {
+  animation: wa-fade-in var(--wa-motion-fast) ease-out both;
+  background: rgba(15, 18, 24, 0.28) !important;
+  backdrop-filter: saturate(140%) blur(18px);
+  -webkit-backdrop-filter: saturate(140%) blur(18px);
+  overflow: auto;
+}
+.wa-modal {
+  animation: wa-modal-in var(--wa-motion-slow) var(--wa-ease-out) both;
+  transform-origin: 50% 35%;
+  background: var(--wa-glass-strong) !important;
+  border: 1px solid var(--wa-glass-border);
+  border-radius: var(--wa-radius-xl);
+  box-shadow: var(--wa-shadow-lg);
+  backdrop-filter: saturate(190%) blur(var(--wa-blur-strong));
+  -webkit-backdrop-filter: saturate(190%) blur(var(--wa-blur-strong));
+}
+/* 多数弹窗第一层仍写死 bg-white：统一成玻璃 */
+.wa-modal-backdrop > div {
+  background: var(--wa-glass-strong) !important;
+  border: 1px solid var(--wa-glass-border);
+  box-shadow: var(--wa-shadow-lg);
+  backdrop-filter: saturate(190%) blur(var(--wa-blur-strong));
+  -webkit-backdrop-filter: saturate(190%) blur(var(--wa-blur-strong));
+  /* grid/flex 子项默认 min-height:auto，会把 max-h 顶失效，底栏按钮被切出屏幕 */
+  min-height: 0;
+  max-height: min(92vh, calc(100dvh - 1.5rem));
+}
+@media (prefers-reduced-transparency: reduce) {
+  .wa-panel,
+  .wa-titlebar,
+  .wa-modal,
+  .wa-modal-backdrop,
+  .wa-modal-backdrop > div {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+  .wa-panel,
+  .wa-modal,
+  .wa-modal-backdrop > div {
+    background: var(--wa-paper) !important;
+  }
+}
+.wa-tab-content { animation: wa-tab-in var(--wa-motion-base) var(--wa-ease-out) both; }
+.wa-card-enter {
+  animation: wa-slide-up var(--wa-motion-base) var(--wa-ease-out) both;
+  animation-delay: var(--wa-enter-delay, 0ms);
+}
+.wa-pop { animation: wa-pop var(--wa-motion-slow) var(--wa-ease-out) both; }
+.wa-spin { animation: wa-spin 800ms linear infinite; }
+.wa-pulse { animation: wa-pulse 1500ms ease-in-out infinite; }
+.wa-breathe { animation: wa-breathe 3500ms ease-in-out infinite; }
+
+.wa-interactive {
+  transition:
+    background-color var(--wa-motion-fast) var(--wa-ease-standard),
+    border-color var(--wa-motion-fast) var(--wa-ease-standard),
+    color var(--wa-motion-fast) var(--wa-ease-standard),
+    opacity var(--wa-motion-fast) ease-out,
+    transform var(--wa-motion-fast) var(--wa-ease-out),
+    box-shadow var(--wa-motion-fast) var(--wa-ease-out);
+}
+.wa-interactive:hover:not(:disabled) { transform: translateY(-1px); }
+.wa-interactive:active:not(:disabled) {
+  transform: translateY(0) scale(0.98);
+  transition-duration: 70ms;
+}
+
+/* 焦点环：所有交互元素 */
+button:focus-visible, a:focus-visible, [role="button"]:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible {
+  outline: 2px solid var(--wa-accent);
+  outline-offset: 2px;
+  transition: outline-color var(--wa-motion-fast) ease-out;
+}
+button:focus:not(:focus-visible),
+input:focus:not(:focus-visible),
+select:focus:not(:focus-visible),
+textarea:focus:not(:focus-visible) { outline: none; }
+
+/* 拖拽时全局短路所有过渡与动画 */
+body[data-wa-dragging="1"] *,
+body[data-wa-dragging="1"] *::before,
+body[data-wa-dragging="1"] *::after {
+  transition: none !important;
+  animation: none !important;
+}
+
+/* 响应式断点（1200 / 1024 / 900 / 768）：窄屏压缩右侧栏 */
+@media (max-width: 1200px) {
+  .wa-pane-right { min-width: 360px; }
+}
+@media (max-width: 1024px) {
+  .wa-pane-right { min-width: 320px; }
+}
+@media (max-width: 900px) {
+  .wa-pane-aside { display: none; }
+}
+
+/* 平滑滚动 */
+@media (prefers-reduced-motion: no-preference) {
+  html { scroll-behavior: smooth; }
+}
+
+/* 减少动效：全局生效，1ms 完成 */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 1ms !important;
+  }
+}
+
+/* 敏感词波浪线（阶段 11） */
+.wa-sensitive {
+  text-decoration: underline wavy #e05252;
+  text-underline-offset: 3px;
+}
+
+/* 编辑器等宽 */
+.wa-mono {
+  font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', Consolas, 'Courier New', monospace;
+  font-variant-numeric: tabular-nums;
+}
+
+/* 通用 sr-only（无障碍） */
+.wa-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}

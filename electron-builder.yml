@@ -1,0 +1,104 @@
+appId: org.writer-assistant.app
+productName: 写作副驾
+copyright: Copyright © 2025 Writer's Assistant Contributors
+
+directories:
+  output: release
+  buildResources: resources
+
+files:
+  - out/**/*
+  - package.json
+  - '!**/*.map'
+
+asar: true
+asarUnpack:
+  - "**/node_modules/mammoth/**"
+  - "**/node_modules/pdf-parse/**"
+  - "**/node_modules/jszip/**"
+
+icon: resources/icons/icon.ico
+
+win:
+  target:
+    - target: nsis
+      arch:
+        - x64
+    - target: zip
+      arch:
+        - x64
+  icon: resources/icons/icon.ico
+  verifyUpdateCodeSignature: false
+  artifactName: ${productName}-${version}-${arch}.${ext}
+
+nsis:
+  oneClick: false
+  perMachine: false
+  allowToChangeInstallationDirectory: true
+  allowElevation: false
+  createDesktopShortcut: true
+  createStartMenuShortcut: true
+  shortcutName: 写作副驾
+  deleteAppDataOnUninstall: false
+  include: resources/installer/installer.nsh
+  artifactName: ${productName}-Setup-${version}-${arch}.${ext}
+
+mac:
+  target:
+    - target: dmg
+      arch:
+        - x64
+        - arm64
+    - target: zip
+      arch:
+        - x64
+        - arm64
+  icon: resources/icons/icon.ico
+  category: public.app-category.productivity
+  hardenedRuntime: false
+  gatekeeperAssess: false
+  identity: null
+  artifactName: ${productName}-${version}-${arch}.${ext}
+
+dmg:
+  title: ${productName} ${version}
+  icon: resources/icons/icon.ico
+  contents:
+    - x: 130
+      y: 220
+      type: file
+    - x: 410
+      y: 220
+      type: link
+      path: /Applications
+
+linux:
+  target:
+    - target: AppImage
+      arch:
+        - x64
+    - target: deb
+      arch:
+        - x64
+  icon: resources/icons/icon.ico
+  category: Office
+  artifactName: ${productName}-${version}-${arch}.${ext}
+
+appImage:
+  artifactName: ${productName}-${version}-${arch}.${ext}
+
+deb:
+  artifactName: ${productName}-${version}-${arch}.${ext}
+  depends:
+    - libgtk-3-0
+    - libnotify4
+    - libxss1
+    - libxtst6
+    - xauth
+    - libnss3
+
+forceCodeSigning: false
+
+publish:
+  - provider: github
+    releaseType: release
