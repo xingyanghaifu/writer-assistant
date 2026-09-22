@@ -27,7 +27,9 @@ jobs:
       - name: Build application
         run: npm run build
       - name: Smoke tests
-        run: WA_SMOKE=1 WA_SMOKE_OUT=reports/smoke.json ./node_modules/.bin/electron . --no-sandbox
+        run: |
+          mkdir -p reports
+          xvfb-run -a --server-args="-screen 0 1280x800x24" ./node_modules/.bin/electron . --no-sandbox
         env:
           WA_SMOKE: '1'
           WA_SMOKE_OUT: reports/smoke.json
